@@ -1,4 +1,4 @@
-<?php require('views/header.php'); ?>
+<?php  require('views/header/header_administrador.php');?>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Asistencias de Entrenadores</h1>
 

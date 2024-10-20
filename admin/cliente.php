@@ -1,6 +1,7 @@
 <?php
 require_once('cliente.class.php');
 $app = new Cliente(); 
+$app -> checkRol('Administrador');
 $accion = (isset($_GET['accion'])) ? $_GET['accion'] : NULL;
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 switch ($accion) {

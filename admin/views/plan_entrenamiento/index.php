@@ -1,8 +1,8 @@
-<?php require('views/header.php'); ?>
+<?php  require('views/header/header_administrador.php');?>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Planes de Entrenamiento</h1>
 
-    <?php if(isset($mensaje)): $app->alerta($tipo, $mensaje); endif; ?>
+    <?php if(isset($mensaje)): $app->alert($tipo, $mensaje); endif; ?>
 
     <!-- Botón "Nuevo Plan de Entrenamiento" -->
     <div class="mb-3">
