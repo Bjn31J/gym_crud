@@ -1,14 +1,18 @@
 <?php
 session_start();
 include('config.class.php');
-
 class Sistema
 {
     var $con;
 
     function conexion()
     {
-        $this->con = new PDO(SGBD . ':host=' . DBHOST . ';dbname=' . DBNAME . ';port=' . DBPORT, DBUSER, DBPASS);
+        try {
+            $this->con = new PDO(SGBD . ':host=' . DBHOST . ';dbname=' . DBNAME . ';port=' . DBPORT, DBUSER, DBPASS);
+            $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Error de conexión: " . $e->getMessage());
+        }
     }
 
     function alert($tipo, $mensaje)
@@ -36,7 +40,6 @@ class Sistema
         }
         return $roles;
     }
-
     function getPrivilegio($correo)
     {
         $this->conexion();
@@ -59,21 +62,21 @@ class Sistema
         }
         return $privilegios;
     }
-
     function login($correo, $contrasena)
     {
-        $contrasena = md5($contrasena); // Hashing de contraseña
+        $this->conexion();
+        $contrasena = md5($contrasena);
         $acceso = false;
+
         if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            $this->conexion();
             $sql = "SELECT * FROM usuario WHERE correo = :correo AND contrasena = :contrasena";
             $stmt = $this->con->prepare($sql);
             $stmt->bindParam(':correo', $correo, PDO::PARAM_STR);
             $stmt->bindParam(':contrasena', $contrasena, PDO::PARAM_STR);
             $stmt->execute();
-            $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!empty($resultado)) {
+            if ($resultado) {
                 $acceso = true;
                 $_SESSION['correo'] = $correo;
                 $_SESSION['validado'] = $acceso;
@@ -82,10 +85,10 @@ class Sistema
                 return $acceso;
             }
         }
+
         $_SESSION['validado'] = false;
         return $acceso;
     }
-
     function logout()
     {
         session_unset();
@@ -93,25 +96,22 @@ class Sistema
         header("Location: login.php");
         exit();
     }
-
     function checkRol($rol)
     {
         if (isset($_SESSION['roles']) && in_array($rol, $_SESSION['roles'])) {
             return true;
         } else {
-            $this->deniedAccess("ERROR: usted no tiene el rol adecuado.");
+            $this->deniedAccess("ERROR: No tienes el rol adecuado para acceder a esta sección.");
         }
     }
-
     function checkPrivilege($permiso)
     {
         if (isset($_SESSION['privilegios']) && in_array($permiso, $_SESSION['privilegios'])) {
             return true;
         } else {
-            $this->deniedAccess("ERROR: usted no tiene el permiso adecuado.");
+            $this->deniedAccess("ERROR: No tienes el permiso adecuado para acceder a esta sección.");
         }
     }
-
     private function deniedAccess($mensaje)
     {
         $tipo = "danger";
@@ -121,3 +121,4 @@ class Sistema
         die();
     }
 }
+
