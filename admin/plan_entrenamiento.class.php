@@ -88,11 +88,17 @@ class Plan_Entrenamiento extends Sistema
     function readAll()
     {
         $this->conexion();
-        $query = "SELECT p.*, c.nombre AS cliente, e.nombre AS entrenador, pa.tipo_plan, pa.costo
-                  FROM planes_entrenamiento p
-                  INNER JOIN clientes c ON p.id_cliente = c.id_cliente
-                  INNER JOIN entrenadores e ON p.id_entrenador = e.id_entrenador
-                  INNER JOIN pagos pa ON p.id_pago = pa.id_pago;";
+        $query = "
+            SELECT p.id_plan, 
+                   CONCAT(c.nombre, ' ', c.apellido) AS cliente, 
+                   CONCAT(e.nombre, ' ', e.apellido) AS entrenador, 
+                   pa.tipo_plan, pa.costo, 
+                   p.descripcion, p.fecha_inicio, p.fecha_fin
+            FROM planes_entrenamiento p
+            INNER JOIN clientes c ON p.id_cliente = c.id_cliente
+            INNER JOIN entrenadores e ON p.id_entrenador = e.id_entrenador
+            INNER JOIN pagos pa ON p.id_pago = pa.id_pago;
+        ";
         $sql = $this->con->prepare($query);
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);

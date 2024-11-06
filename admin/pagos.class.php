@@ -64,7 +64,7 @@ class Pagos extends Sistema {
     }
     function readAll() {
         $this->conexion();
-        $query = "SELECT pa.*, c.nombre AS cliente, pa.tipo_plan, pa.costo
+        $query = "SELECT pa.*, CONCAT(c.nombre, ' ', c.apellido) AS cliente_completo, pa.tipo_plan, pa.costo
                   FROM pagos pa
                   INNER JOIN clientes c ON pa.id_cliente = c.id_cliente;";
         $sql = $this->con->prepare($query);

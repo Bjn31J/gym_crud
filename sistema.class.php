@@ -4,7 +4,6 @@ include('config.class.php');
 class Sistema
 {
     var $con;
-
     function conexion()
     {
         try {
@@ -14,12 +13,10 @@ class Sistema
             die("Error de conexión: " . $e->getMessage());
         }
     }
-
     function alert($tipo, $mensaje)
     {
         include('views/alert.php');
     }
-
     function getRol($correo)
     {
         $this->conexion();
@@ -85,7 +82,6 @@ class Sistema
                 return $acceso;
             }
         }
-
         $_SESSION['validado'] = false;
         return $acceso;
     }

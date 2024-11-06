@@ -1,15 +1,13 @@
-<?php  require('views/header/header_administrador.php');?>
+<?php require('views/header/header_administrador.php'); ?>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Pagos</h1>
 
-    <?php if(isset($mensaje)): $app->alert($tipo, $mensaje); endif; ?>
+    <?php if(isset($mensaje)): $app->alerta($tipo, $mensaje); endif; ?>
 
-    <!-- Botón "Nuevo Pago" -->
     <div class="mb-3">
         <a href="pagos.php?accion=crear" class="btn btn-success btn-lg">Nuevo Pago</a>
     </div>
 
-    <!-- Tabla de Pagos -->
     <table class="table table-hover table-bordered shadow-sm">
         <thead class="thead-dark">
             <tr>
@@ -25,7 +23,7 @@
             <?php foreach ($pagos as $pago): ?>
             <tr>
                 <th scope="row"><?php echo $pago['id_pago']; ?></th>
-                <td><?php echo $pago['cliente']; ?></td>
+                <td><?php echo $pago['cliente_completo']; ?></td> <!-- Mostrar nombre completo del cliente -->
                 <td><?php echo '$'.number_format($pago['costo'], 2); ?></td> 
                 <td><?php echo ucfirst($pago['tipo_plan']); ?></td> 
                 <td><?php echo $pago['fecha_pago']; ?></td> 
@@ -39,3 +37,4 @@
     </table>
 </div>
 <?php require('views/footer.php'); ?>
+

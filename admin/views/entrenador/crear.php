@@ -14,9 +14,9 @@
 
         <!-- Apellido del Entrenador -->
         <div class="form-group row mb-4">
-            <label for="apellido" class="col-sm-2 col-form-label font-weight-bold">Apellido del Entrenador</label>
+            <label for="apellido" class="col-sm-2 col-form-label font-weight-bold">Apellidos del Entrenador</label>
             <div class="col-sm-10">
-                <input type="text" name="data[apellido]" placeholder="Escribe el apellido" class="form-control" value="<?php if(isset($entrenador['apellido'])): echo $entrenador['apellido']; endif; ?>" required />
+                <input type="text" name="data[apellido]" placeholder="Escribe los apellidos" class="form-control" value="<?php if(isset($entrenador['apellido'])): echo $entrenador['apellido']; endif; ?>" required />
             </div>
         </div>
 
