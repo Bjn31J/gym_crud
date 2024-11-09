@@ -1,8 +1,6 @@
 <?php require('views/header/header_administrador.php'); ?>
 <div class="container mt-5">
-    <div class="text-center mb-4">
-        <h1 class="display-4">Planes de Entrenamiento</h1>
-    </div>
+    <h1 class="text-center mb-4">Planes Entrenamiento</h1>
 
     <?php if (isset($mensaje)): ?>
         <div class="alert alert-<?php echo $tipo; ?>" role="alert">
