@@ -1,8 +1,6 @@
-<?php  require('views/header/header_administrador.php');?>
+<?php require('views/header/header_administrador.php'); ?>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Entrenadores Fitness Plus</h1>
-
-    <?php if(isset($mensaje)): $app->alert($tipo, $mensaje); endif; ?>
 
     <!-- Botón "Nuevo Entrenador" -->
     <div class="mb-3">
@@ -14,6 +12,7 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Id</th>
+                <th scope="col">Fotografía</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellidos</th>
                 <th scope="col">Especialidad</th>
@@ -26,6 +25,20 @@
             <?php foreach ($entrenadores as $entrenador): ?>
             <tr>
                 <th scope="row"><?php echo $entrenador['id_entrenador']; ?></th>
+                <td>
+                    <div class="d-flex justify-content-center">
+                        <img class="rounded shadow-sm" 
+                             src="<?php 
+                                if (file_exists("../uploads/" . $entrenador['fotografia'])) {
+                                    echo("../uploads/" . $entrenador['fotografia']);
+                                } else {
+                                    echo('../uploads/default.png');
+                                }
+                             ?>" 
+                             alt="Foto de <?php echo $entrenador['nombre']; ?>" 
+                             style="width: 100px; height: auto; max-height: 100px;">
+                    </div>
+                </td>
                 <td><?php echo $entrenador['nombre']; ?></td>
                 <td><?php echo $entrenador['apellido']; ?></td>
                 <td><?php echo $entrenador['especialidad']; ?></td>
@@ -42,3 +55,6 @@
     </table>
 </div>
 <?php require('views/footer.php'); ?>
+
+
+

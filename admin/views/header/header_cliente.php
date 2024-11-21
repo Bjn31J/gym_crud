@@ -1,13 +1,16 @@
+<?php require_once('views/header.php') ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="stylesheet" href="/fitnessplus/css/estilo.css">
     <title>FITNESS PLUS</title>
 </head>
+
 <body>
     <!-- MENU -->
     <div class="contenedor-header">
@@ -21,15 +24,15 @@
                 <a href="#galeria" onclick="seleccionar()">Galería</a>
                 <a href="#equipo" onclick="seleccionar()">Equipo</a>
                 <a href="#contacto" onclick="seleccionar()">Contacto</a>
-                <a href="./admin/login.php" onclick="seleccionar()">Iniciar sesión</a>
+                <a href="#iniciar-sesion" onclick="seleccionar()">Iniciar sesión</a>
+
             </nav>
             <!-- Icono del menu responsive -->
             <div id="icono-nav" class="nav-responsive" onclick="mostrarOcultarMenu()">
                 <i class="fa-solid fa-bars"></i>
-            </div>                
+            </div>
         </header>
     </div>
-
     <!-- SECCIÓN INICIO -->
     <section id="inicio" class="inicio">
         <div class="contenido-seccion">
@@ -51,7 +54,7 @@
     <section id="nosotros" class="nosotros">
         <div class="fila">
             <div class="col">
-                <img src="./images/nosotros.png" alt="">
+                <img src="/fitnessplus/images/nosotros.png" alt="Nosotros">
             </div>
             <div class="col">
                 <div class="contenedor-titulo">
@@ -62,7 +65,7 @@
                     </div>
                 </div>
                 <p class="p-especial">
-                    En nuestro gimnasio, nos enfocamos en brindarte una experiencia de entrenamiento integral y de alta calidad. 
+                    En nuestro gimnasio, nos enfocamos en brindarte una experiencia de entrenamiento integral y de alta calidad.
                 </p>
                 <p>
                     Instalaciones de primer nivel y un equipo de profesionales apasionados y comprometidos con tu progreso...
@@ -88,7 +91,7 @@
                     <p>Escoge tu plan de acuerdo a tus objetivos</p>
                 </div>
                 <div class="col">
-                    <img src="./images/fondo-servicios.jpg" alt="">
+                    <img src="/fitnessplus/images/servicios.png" alt="Servicios">
                 </div>
             </div>
         </div>
@@ -114,7 +117,7 @@
     <section id="comodidades" class="comodidades">
         <div class="fila">
             <div class="col">
-                <img src="./images/nosotros.png" alt="">
+                <img src="/fitnessplus/images/nosotros.png" alt="Comodidades">
             </div>
             <div class="col">
                 <div class="contenedor-titulo">
@@ -145,18 +148,18 @@
                 </div>
             </div>
             <div class="fila">
-                <div class="col"><img src="./images/f1.jpg" alt=""></div>
-                <div class="col"><img src="./images/f2.jpg" alt=""></div>
-                <div class="col"><img src="./images/f3.jpg" alt=""></div>
+                <div class="col"><img src="/fitnessplus/images/f1.jpg" alt="Galería 1"></div>
+                <div class="col"><img src="/fitnessplus/images/f2.jpg" alt="Galería 2"></div>
+                <div class="col"><img src="/fitnessplus/images/f3.jpg" alt="Galería 3"></div>
             </div>
             <div class="fila">
-                <div class="col"><img src="./images/f4.jpg" alt=""></div>
-                <div class="col"><img src="./images/f5.jpg" alt=""></div>
-                <div class="col"><img src="./images/f6.jpg" alt=""></div>
+                <div class="col"><img src="/fitnessplus/images/f4.jpg" alt="Galería 4"></div>
+                <div class="col"><img src="/fitnessplus/images/f5.jpg" alt="Galería 5"></div>
+                <div class="col"><img src="/fitnessplus/images/f6.jpg" alt="Galería 6"></div>
             </div>
         </div>
     </section>
-    
+
     <!-- SECCIÓN EQUIPO -->
     <section class="equipo" id="equipo">
         <div class="contenido-seccion">
@@ -169,21 +172,21 @@
             </div>
             <div class="fila">
                 <div class="col">
-                    <img src="./images/e1.png" alt="">
+                    <img src="/fitnessplus/images/e1.png" alt="Entrenador 1">
                     <div class="info">
                         <h2>MARCOS</h2>
                         <p>Entrenador-FITNESSPLUSS</p>
                     </div>
                 </div>
                 <div class="col">
-                    <img src="./images/e2.png" alt="">
+                    <img src="/fitnessplus/images/e2.png" alt="Entrenador 2">
                     <div class="info">
                         <h2>PATRICIA</h2>
                         <p>Entrenadora-FITNESSPLUSS</p>
                     </div>
                 </div>
                 <div class="col">
-                    <img src="./images/e3.png" alt="">
+                    <img src="/fitnessplus/images/e3.png" alt="Entrenador 3">
                     <div class="info">
                         <h2>JUAN</h2>
                         <p>Entrenador-FITNESSPLUSS</p>
@@ -217,12 +220,10 @@
             </div>
         </div>
     </section>
-
-    <footer>
-        <div class="info">
-            <p>2024 - <span class="txtRojo">FITNESS PLUS</span> Todos los derechos reservados</p>
-        </div>
-    </footer>
-    <script src="./js/app.js"></script>
+    <!-- SECCIÓN INICIAR SESIÓN -->
+    <section id="iniciar-sesion">
+    <a href="/fitnessplus/admin/login.php">Iniciar sesión</a>
+    </section>
+    <script src="/fitnessplus/js/app.js"></script>
 </body>
 </html>
