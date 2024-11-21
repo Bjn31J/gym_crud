@@ -1,4 +1,19 @@
 <?php require_once('views/header.php') ?>
+<?php
+// Conexión a la base de datos
+$entrenadores = [];
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=fitnessplus', 'fitnessplus', '123');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Consulta a la base de datos
+    $stmt = $pdo->prepare("SELECT nombre, apellido, especialidad, fotografia FROM entrenadores");
+    $stmt->execute();
+    $entrenadores = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error de conexión: " . $e->getMessage();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -159,43 +174,32 @@
             </div>
         </div>
     </section>
-
     <!-- SECCIÓN EQUIPO -->
-    <section class="equipo" id="equipo">
-        <div class="contenido-seccion">
-            <div class="contenedor-titulo">
-                <div class="numero">05</div>
-                <div class="info">
-                    <span class="frase">LA MEJOR EXPERIENCIA</span>
-                    <h2>Entrenadores</h2>
-                </div>
-            </div>
-            <div class="fila">
-                <div class="col">
-                    <img src="/fitnessplus/images/e1.png" alt="Entrenador 1">
-                    <div class="info">
-                        <h2>MARCOS</h2>
-                        <p>Entrenador-FITNESSPLUSS</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <img src="/fitnessplus/images/e2.png" alt="Entrenador 2">
-                    <div class="info">
-                        <h2>PATRICIA</h2>
-                        <p>Entrenadora-FITNESSPLUSS</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <img src="/fitnessplus/images/e3.png" alt="Entrenador 3">
-                    <div class="info">
-                        <h2>JUAN</h2>
-                        <p>Entrenador-FITNESSPLUSS</p>
-                    </div>
-                </div>
+<section class="equipo" id="equipo">
+    <div class="contenido-seccion">
+        <div class="contenedor-titulo">
+            <div class="numero">05</div>
+            <div class="info">
+                <span class="frase">LA MEJOR EXPERIENCIA</span>
+                <h2>Entrenadores</h2>
             </div>
         </div>
-    </section>
-
+        <div class="fila">
+            <?php foreach ($entrenadores as $entrenador): ?>
+                <div class="col">
+                    <img src="/fitnessplus/uploads/<?php echo htmlspecialchars($entrenador['fotografia']); ?>" alt="<?php echo htmlspecialchars($entrenador['nombre']); ?>">
+                    <div class="info">
+                        <h2><?php echo htmlspecialchars($entrenador['nombre'] . ' ' . $entrenador['apellido']); ?></h2>
+                        <p><?php echo htmlspecialchars($entrenador['especialidad']); ?></p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php if (empty($entrenadores)): ?>
+            <p>No hay entrenadores registrados.</p>
+        <?php endif; ?>
+    </div>
+</section>
     <!-- SECCIÓN CONTACTO -->
     <section class="contacto" id="contacto">
         <div class="contenido-seccion">
@@ -214,10 +218,7 @@
                 <textarea cols="30" rows="10" placeholder="Ingresa el Mensaje"></textarea>
                 <button>Enviar Mensaje</button>
             </div>
-            <div class="fila-datos">
-                <div class="col"><i class="fa-solid fa-location-dot"></i> Fitness Plus, 5 de Mayo 108, Col. Centro, 38000 Celaya, Gto.</div>
-                <div class="col"><i class="fa-regular fa-clock"></i> Lunes a Sábado, 6:00h - 22:00h</div>
-            </div>
+            
         </div>
     </section>
     <!-- SECCIÓN INICIAR SESIÓN -->

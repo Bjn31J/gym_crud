@@ -25,16 +25,10 @@
                         <input class="form-check-input" type="checkbox" id="recordarme" />
                         <label class="form-check-label" for="recordarme"> Recuérdame </label>
                     </div>
-                    <a href="login.php?accion=forgot">Recuperar contraseña</a>
                 </div>
 
                 <!-- Botón de Inicio de Sesión -->
                 <button type="submit" name="enviar" class="btn btn-primary btn-block mb-4">Iniciar Sesión</button>
-
-                <!-- Registro y otras opciones -->
-                <div class="text-center">
-                    <p>¿No tienes cuenta? <a href="registro.php">Regístrate</a></p>
-                </div>
             </form>
         </div>
     </div>
