@@ -223,7 +223,7 @@ try {
     </section>
     <!-- SECCIÓN INICIAR SESIÓN -->
     <section id="iniciar-sesion">
-    <a href="/fitnessplus/admin/login.php">Iniciar sesión</a>
+    <a href="/fitnessplus/admin/login.php"></a>
     </section>
     <script src="/fitnessplus/js/app.js"></script>
 </body>

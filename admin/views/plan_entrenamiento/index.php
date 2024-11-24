@@ -2,11 +2,7 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">Planes Entrenamiento</h1>
 
-    <?php if (isset($mensaje)): ?>
-        <div class="alert alert-<?php echo $tipo; ?>" role="alert">
-            <?php echo $mensaje; ?>
-        </div>
-    <?php endif; ?>
+    <?php if (isset($mensaje)) : $app->alert($tipo, $mensaje); endif; ?>
 
     <!-- Botón "Nuevo Plan de Entrenamiento" alineado a la izquierda -->
     <div class="d-flex justify-content-start mb-4">

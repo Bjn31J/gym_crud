@@ -1,13 +1,13 @@
 <?php
-require_once('pagos.class.php'); 
-$app = new Pagos(); 
-$app -> checkRol('Administrador');
+require_once('pagos.class.php');
+$app = new Pagos();
+$app->checkRol('Administrador');
 $accion = (isset($_GET['accion'])) ? $_GET['accion'] : NULL;
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 switch ($accion) {
     case 'crear':
-        $clientes = $app->getClientes();  
-        include 'views/pagos/crear.php'; 
+        $clientes = $app->getClientes();
+        include 'views/pagos/crear.php';
         break;
     case 'nuevo':
         $data = $_POST['data'];
@@ -23,17 +23,17 @@ switch ($accion) {
             $tipo = "danger";
         }
         $pagos = $app->readAll();
-        include('views/pagos/index.php'); 
+        include('views/pagos/index.php');
         break;
     case 'actualizar':
-        $pago = $app->readOne($id); 
-        $clientes = $app->getClientes();  
-        include('views/pagos/crear.php'); 
+        $pago = $app->readOne($id);
+        $clientes = $app->getClientes();
+        include('views/pagos/crear.php');
         break;
     case 'modificar':
         $data = $_POST['data'];
         $resultado = $app->update($id, $data);
-        
+
         if ($resultado) {
             $mensaje = "El pago se actualizó correctamente";
             $tipo = "success";
@@ -42,7 +42,7 @@ switch ($accion) {
             $tipo = "danger";
         }
         $pagos = $app->readAll();
-        include('views/pagos/index.php'); 
+        include('views/pagos/index.php');
         break;
     case 'eliminar':
         if (!is_null($id) && is_numeric($id)) {
@@ -56,10 +56,12 @@ switch ($accion) {
             }
         }
         $pagos = $app->readAll();
-        include("views/pagos/index.php"); 
+        include("views/pagos/index.php");
         break;
+    case 'imprimir':
+        $app->imprimirTicket($id);
+        die();
     default:
         $pagos = $app->readAll();
-        include 'views/pagos/index.php'; 
+        include 'views/pagos/index.php';
 }
-?>

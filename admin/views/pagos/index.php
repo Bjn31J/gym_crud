@@ -2,7 +2,7 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">Pagos</h1>
 
-    <?php if(isset($mensaje)): $app->alerta($tipo, $mensaje); endif; ?>
+    <?php if(isset($mensaje)): $app->alert($tipo, $mensaje); endif; ?>
 
     <div class="mb-3">
         <a href="pagos.php?accion=crear" class="btn btn-success btn-lg">Nuevo Pago</a>
@@ -30,6 +30,7 @@
                 <td>
                     <a href="pagos.php?accion=actualizar&id=<?php echo $pago['id_pago']; ?>" class="btn btn-primary">Actualizar</a>
                     <a href="pagos.php?accion=eliminar&id=<?php echo $pago['id_pago']; ?>" class="btn btn-danger ml-2">Eliminar</a>
+                    <a href="pagos.php?accion=imprimir&id=<?php echo $pago['id_pago']; ?>" class="btn btn-secondary ml-2">Imprimir</a>
                 </td>
             </tr>
             <?php endforeach; ?>

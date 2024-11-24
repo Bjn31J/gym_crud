@@ -23,38 +23,37 @@
         </thead>
         <tbody>
             <?php foreach ($entrenadores as $entrenador): ?>
-            <tr>
-                <th scope="row"><?php echo $entrenador['id_entrenador']; ?></th>
-                <td>
-                    <div class="d-flex justify-content-center">
-                        <img class="rounded shadow-sm" 
-                             src="<?php 
-                                if (file_exists("../uploads/" . $entrenador['fotografia'])) {
-                                    echo("../uploads/" . $entrenador['fotografia']);
-                                } else {
-                                    echo('../uploads/default.png');
-                                }
-                             ?>" 
-                             alt="Foto de <?php echo $entrenador['nombre']; ?>" 
-                             style="width: 100px; height: auto; max-height: 100px;">
-                    </div>
-                </td>
-                <td><?php echo $entrenador['nombre']; ?></td>
-                <td><?php echo $entrenador['apellido']; ?></td>
-                <td><?php echo $entrenador['especialidad']; ?></td>
-                <td><?php echo $entrenador['email']; ?></td>
-                <td><?php echo $entrenador['telefono']; ?></td>
-                <td>
-                    <!-- Botones separados para actualizar y eliminar -->
-                    <a href="entrenador.php?accion=actualizar&id=<?php echo $entrenador['id_entrenador']; ?>" class="btn btn-primary">Actualizar</a>
-                    <a href="entrenador.php?accion=eliminar&id=<?php echo $entrenador['id_entrenador']; ?>" class="btn btn-danger ml-2">Eliminar</a>
-                </td>
-            </tr>
+                <tr>
+                    <th scope="row"><?php echo $entrenador['id_entrenador']; ?></th>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <img class="rounded shadow-sm"
+                                src="<?php
+                                        $rutaImagen = $_SERVER['DOCUMENT_ROOT'] . "/fitnessplus/uploads/" . $entrenador['fotografia'];
+                                        if (!empty($entrenador['fotografia']) && file_exists($rutaImagen)) {
+                                            echo "/fitnessplus/uploads/" . $entrenador['fotografia'];
+                                        } else {
+                                            echo '/fitnessplus/uploads/default.png';
+                                        }
+                                        ?>"
+                                alt="Foto de <?php echo htmlspecialchars($entrenador['nombre']); ?>"
+                                style="width: 100px; height: auto; max-height: 100px;">
+                        </div>
+                    </td>
+
+                    <td><?php echo $entrenador['nombre']; ?></td>
+                    <td><?php echo $entrenador['apellido']; ?></td>
+                    <td><?php echo $entrenador['especialidad']; ?></td>
+                    <td><?php echo $entrenador['email']; ?></td>
+                    <td><?php echo $entrenador['telefono']; ?></td>
+                    <td>
+                        <!-- Botones separados para actualizar y eliminar -->
+                        <a href="entrenador.php?accion=actualizar&id=<?php echo $entrenador['id_entrenador']; ?>" class="btn btn-primary">Actualizar</a>
+                        <a href="entrenador.php?accion=eliminar&id=<?php echo $entrenador['id_entrenador']; ?>" class="btn btn-danger ml-2">Eliminar</a>
+                    </td>
+                </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 </div>
 <?php require('views/footer.php'); ?>
-
-
-
