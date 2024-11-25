@@ -33,7 +33,11 @@ switch ($accion) {
             $tipo = "danger";
         }
         $asistencias = $app->readAll();
-        include('views/asistencia/index_entrenador.php'); // Usar la vista específica del entrenador
+        if ($rolUsuario === 'Entrenador') {
+            include('views/asistencia/index_entrenador.php'); // Usar la vista específica del entrenador
+        } else {
+            include('views/asistencia/index.php'); // Vista completa para el administrador
+        }
         break;
 
     case 'actualizar': // Solo para Administrador
@@ -67,7 +71,7 @@ switch ($accion) {
             $tipo = "danger";
         }
         $asistencias = $app->readAll();
-        include('views/asistencia/index.php');
+        include('views/asistencia/index.php'); // Correcto para administrador
         break;
 
     case 'eliminar': // Solo para Administrador
@@ -89,7 +93,7 @@ switch ($accion) {
             }
         }
         $asistencias = $app->readAll();
-        include("views/asistencia/index.php");
+        include("views/asistencia/index.php"); // Correcto para administrador
         break;
 
     default:
