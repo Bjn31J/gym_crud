@@ -23,7 +23,7 @@
             <?php foreach ($pagos as $pago): ?>
             <tr>
                 <th scope="row"><?php echo $pago['id_pago']; ?></th>
-                <td><?php echo $pago['cliente_completo']; ?></td> <!-- Mostrar nombre completo del cliente -->
+                <td><?php echo $pago['cliente_completo']; ?></td> 
                 <td><?php echo '$'.number_format($pago['costo'], 2); ?></td> 
                 <td><?php echo ucfirst($pago['tipo_plan']); ?></td> 
                 <td><?php echo $pago['fecha_pago']; ?></td> 

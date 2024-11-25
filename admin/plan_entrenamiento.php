@@ -1,16 +1,41 @@
 <?php
 require_once('plan_entrenamiento.class.php');
 $app = new Plan_Entrenamiento(); 
-$app -> checkRol('Administrador');
+$rolUsuario = $app->checkRol('Administrador', 'Cliente');
 $accion = (isset($_GET['accion'])) ? $_GET['accion'] : NULL;
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
+
+// Restricciones para rol "Cliente"
+if ($rolUsuario == 'Cliente' && !in_array($accion, [NULL, 'imprimir'])) {
+    $mensaje = "Acción no permitida para este rol.";
+    $tipo = "danger";
+    $planes = $app->readAll(); // Mostrar solo los planes
+    include 'views/plan_entrenamiento/index.php'; 
+    exit();
+}
+
 switch ($accion) {
-    case 'crear':
+    case 'crear': // Acceso solo para Administrador
+        if ($rolUsuario != 'Administrador') {
+            $mensaje = "Acción no permitida.";
+            $tipo = "danger";
+            $planes = $app->readAll();
+            include 'views/plan_entrenamiento/index.php'; 
+            exit();
+        }
         $clientes = $app->getClientes();  
         $entrenadores = $app->getEntrenadores();  
         include 'views/plan_entrenamiento/crear.php'; 
         break;
-    case 'nuevo':
+
+    case 'nuevo': // Acceso solo para Administrador
+        if ($rolUsuario != 'Administrador') {
+            $mensaje = "Acción no permitida.";
+            $tipo = "danger";
+            $planes = $app->readAll();
+            include 'views/plan_entrenamiento/index.php'; 
+            exit();
+        }
         $data = $_POST['data'];
         $resultado = $app->create($data);
         if (is_array($resultado) && isset($resultado['error'])) {
@@ -26,13 +51,29 @@ switch ($accion) {
         $planes = $app->readAll();
         include('views/plan_entrenamiento/index.php'); 
         break;
-    case 'actualizar':
+
+    case 'actualizar': // Acceso solo para Administrador
+        if ($rolUsuario != 'Administrador') {
+            $mensaje = "Acción no permitida.";
+            $tipo = "danger";
+            $planes = $app->readAll();
+            include 'views/plan_entrenamiento/index.php'; 
+            exit();
+        }
         $plan = $app->readOne($id); 
         $clientes = $app->getClientes();  
         $entrenadores = $app->getEntrenadores();  
         include('views/plan_entrenamiento/crear.php'); 
         break;
-    case 'modificar':
+
+    case 'modificar': // Acceso solo para Administrador
+        if ($rolUsuario != 'Administrador') {
+            $mensaje = "Acción no permitida.";
+            $tipo = "danger";
+            $planes = $app->readAll();
+            include 'views/plan_entrenamiento/index.php'; 
+            exit();
+        }
         $data = $_POST['data'];
         $resultado = $app->update($id, $data);
         if ($resultado) {
@@ -45,7 +86,15 @@ switch ($accion) {
         $planes = $app->readAll();
         include('views/plan_entrenamiento/index.php'); 
         break;
-    case 'eliminar':
+
+    case 'eliminar': // Acceso solo para Administrador
+        if ($rolUsuario != 'Administrador') {
+            $mensaje = "Acción no permitida.";
+            $tipo = "danger";
+            $planes = $app->readAll();
+            include 'views/plan_entrenamiento/index.php'; 
+            exit();
+        }
         if (!is_null($id) && is_numeric($id)) {
             $resultado = $app->delete($id);
             if ($resultado) {
@@ -59,9 +108,16 @@ switch ($accion) {
         $planes = $app->readAll();
         include("views/plan_entrenamiento/index.php"); 
         break;
-    default:
-        $planes = $app->readAll();
-        include 'views/plan_entrenamiento/index.php'; 
+
+        default: // Mostrar planes
+        if ($rolUsuario === 'Cliente') {
+            $planes = $app->readAll('Cliente'); // Filtrar por cliente
+            include 'views/plan_entrenamiento/index_cliente.php'; // Vista del cliente
+        } else {
+            $planes = $app->readAll('Administrador'); // Administrador ve todos los planes
+            include 'views/plan_entrenamiento/index.php'; // Vista del administrador
+        }
+        break;
 }
 ?>
 

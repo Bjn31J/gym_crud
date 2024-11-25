@@ -114,7 +114,7 @@ class Pagos extends Sistema
                     <img src="../images/logo.png" alt="Logo Fitness Plus" style="width: 150px; height: auto;">
                 </div>
                 <h1 style="text-align: center; color: #ff1133;">Recibo de Pago</h1>
-                <p style="text-align: center; font-size: 1.2rem; margin-bottom: 20px;">Gracias por tu pago, ' . htmlspecialchars($pago['cliente_nombre'] . ' ' . $pago['cliente_apellido']) . '.</p>
+                <p style="text-align: center; font-size: 1.2rem; margin-bottom: 20px;">Gracias por tu pago, ' . $pago['cliente_nombre'] . ' ' . $pago['cliente_apellido'] . '.</p>
                 <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                     <tr>
                         <th style="background-color: #ff1133; color: white; padding: 10px;">Campo</th>
@@ -122,19 +122,19 @@ class Pagos extends Sistema
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;">Cliente</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">' . htmlspecialchars($pago['cliente_nombre'] . ' ' . $pago['cliente_apellido']) . '</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">' . $pago['cliente_nombre'] . ' ' . $pago['cliente_apellido'] . '</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;">Monto Pagado</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">$' . htmlspecialchars(number_format($pago['costo'], 2)) . '</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">$' . number_format($pago['costo'], 2) . '</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;">Tipo de Plan</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">' . htmlspecialchars($pago['tipo_plan']) . '</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">' . $pago['tipo_plan'] . '</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ddd;">Fecha de Pago</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">' . htmlspecialchars(date('d/m/Y', strtotime($pago['fecha_pago']))) . '</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">' . date('d/m/Y', strtotime($pago['fecha_pago'])) . '</td>
                     </tr>
                 </table>
             </body>

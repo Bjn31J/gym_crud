@@ -1,230 +1,48 @@
-<?php require_once('views/header.php') ?>
-<?php
-// Conexión a la base de datos
-$entrenadores = [];
-try {
-    $pdo = new PDO('mysql:host=localhost;dbname=fitnessplus', 'fitnessplus', '123');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Consulta a la base de datos
-    $stmt = $pdo->prepare("SELECT nombre, apellido, especialidad, fotografia FROM entrenadores");
-    $stmt->execute();
-    $entrenadores = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo "Error de conexión: " . $e->getMessage();
-}
-?>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Fitness Plus - Cliente</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/fitnessplus/css/estilo.css">
-    <title>FITNESS PLUS</title>
 </head>
 
 <body>
-    <!-- MENU -->
-    <div class="contenedor-header">
-        <header>
-            <h1><span class="txtRojo">FITNESS PLUS</span></h1>
-            <nav id="nav">
-                <a href="#inicio" onclick="seleccionar()">Inicio</a>
-                <a href="#nosotros" onclick="seleccionar()">Nosotros</a>
-                <a href="#servicios" onclick="seleccionar()">Servicios</a>
-                <a href="#comodidades" onclick="seleccionar()">Comodidades</a>
-                <a href="#galeria" onclick="seleccionar()">Galería</a>
-                <a href="#equipo" onclick="seleccionar()">Equipo</a>
-                <a href="#contacto" onclick="seleccionar()">Contacto</a>
-                <a href="#iniciar-sesion" onclick="seleccionar()">Iniciar sesión</a>
-
-            </nav>
-            <!-- Icono del menu responsive -->
-            <div id="icono-nav" class="nav-responsive" onclick="mostrarOcultarMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-        </header>
-    </div>
-    <!-- SECCIÓN INICIO -->
-    <section id="inicio" class="inicio">
-        <div class="contenido-seccion">
-            <div class="info">
-                <h2>HAZ QUE <span class="txtRojo">OCURRA</span></h2>
-                <p>El empeño es la raíz del logro.</p>
-                <a href="#nosotros" class="btn-mas">
-                    <i class="fa-solid fa-circle-chevron-down"></i>
-                </a>
-            </div>
-            <div class="opciones">
-                <div class="opcion">01. PLAN PERSONALIZADO</div>
-                <div class="opcion">02. PLAN ESTÁNDAR</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN NOSOTROS -->
-    <section id="nosotros" class="nosotros">
-        <div class="fila">
-            <div class="col">
-                <img src="/fitnessplus/images/nosotros.png" alt="Nosotros">
-            </div>
-            <div class="col">
-                <div class="contenedor-titulo">
-                    <div class="numero">01</div>
-                    <div class="info">
-                        <span class="frase">LA MEJOR EXPERIENCIA</span>
-                        <h2>NOSOTROS</h2>
-                    </div>
-                </div>
-                <p class="p-especial">
-                    En nuestro gimnasio, nos enfocamos en brindarte una experiencia de entrenamiento integral y de alta calidad.
-                </p>
-                <p>
-                    Instalaciones de primer nivel y un equipo de profesionales apasionados y comprometidos con tu progreso...
-                </p>
-            </div>
-        </div>
-        <hr>
-    </section>
-
-    <!-- SECCIÓN SERVICIOS -->
-    <section class="servicios" id="servicios">
-        <div class="contenido-seccion">
-            <div class="fila">
-                <div class="col">
-                    <div class="contenedor-titulo">
-                        <div class="numero">02</div>
-                        <div class="info">
-                            <span class="frase">LA MEJOR EXPERIENCIA</span>
-                            <h2>SERVICIOS</h2>
-                        </div>
-                    </div>
-                    <p class="p-especial">Conoce nuestros planes </p>
-                    <p>Escoge tu plan de acuerdo a tus objetivos</p>
-                </div>
-                <div class="col">
-                    <img src="/fitnessplus/images/servicios.png" alt="Servicios">
-                </div>
-            </div>
-        </div>
-        <div class="info-servicios">
-            <table>
-                <tr>
-                    <td>
-                        <i class="fa-solid fa-person-walking"></i>
-                        <h3><span class="txtRojo">Clase </span>Personalizada</h3>
-                        <p>Clase totalmente guiada por uno de nuestros entrenadores</p>
-                    </td>
-                    <td>
-                        <i class="fa-solid fa-dumbbell"></i>
-                        <h3><span class="txtRojo">Clase </span>Estandar</h3>
-                        <p>Uno de nuestros entrenadores te proporcionara rutina</p>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </section>
-
-    <!-- SECCIÓN COMODIDADES -->
-    <section id="comodidades" class="comodidades">
-        <div class="fila">
-            <div class="col">
-                <img src="/fitnessplus/images/nosotros.png" alt="Comodidades">
-            </div>
-            <div class="col">
-                <div class="contenedor-titulo">
-                    <div class="numero">03</div>
-                    <div class="info">
-                        <span class="frase">LA MEJOR EXPERIENCIA</span>
-                        <h2>COMODIDADES</h2>
-                    </div>
-                </div>
-                <p class="p-especial">Para mejorar tu experiencia te ofrecemos: </p>
-                <ul>
-                    <li><span>REGADERAS</span> Contamos con baños totalmente equipados y limpios así como agua caliente </li>
-                    <li><span>WIFI GRATIS</span> Contamos con hotspots en todo el gimnasio para que tu red sea estable </li>
-                    <li><span>ESTACIONAMIENTO GRATIS</span> Contamos con lugares de estacionamiento (Cupo limitado)</li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Fitness Plus - Cliente </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- Link a Plan de Entrenamiento -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="plan_entrenamiento.php">Plan de Entrenamiento</a>
+                    </li>
+                    <!-- Link a Pagos -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagos.php">Pagos</a>
+                    </li>
+                    <!-- Botón de Cerrar Sesión -->
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="login.php?accion=logout">Salir</a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </section>
-
-    <!-- SECCIÓN GALERÍA -->
-    <section class="galeria" id="galeria">
-        <div class="contenido-seccion">
-            <div class="contenedor-titulo">
-                <div class="numero">04</div>
-                <div class="info">
-                    <span class="frase">LA MEJOR EXPERIENCIA</span>
-                    <h2>GALERÍA</h2>
-                </div>
-            </div>
-            <div class="fila">
-                <div class="col"><img src="/fitnessplus/images/f1.jpg" alt="Galería 1"></div>
-                <div class="col"><img src="/fitnessplus/images/f2.jpg" alt="Galería 2"></div>
-                <div class="col"><img src="/fitnessplus/images/f3.jpg" alt="Galería 3"></div>
-            </div>
-            <div class="fila">
-                <div class="col"><img src="/fitnessplus/images/f4.jpg" alt="Galería 4"></div>
-                <div class="col"><img src="/fitnessplus/images/f5.jpg" alt="Galería 5"></div>
-                <div class="col"><img src="/fitnessplus/images/f6.jpg" alt="Galería 6"></div>
-            </div>
-        </div>
-    </section>
-    <!-- SECCIÓN EQUIPO -->
-<section class="equipo" id="equipo">
-    <div class="contenido-seccion">
-        <div class="contenedor-titulo">
-            <div class="numero">05</div>
-            <div class="info">
-                <span class="frase">LA MEJOR EXPERIENCIA</span>
-                <h2>Entrenadores</h2>
-            </div>
-        </div>
-        <div class="fila">
-            <?php foreach ($entrenadores as $entrenador): ?>
-                <div class="col">
-                    <img src="/fitnessplus/uploads/<?php echo htmlspecialchars($entrenador['fotografia']); ?>" alt="<?php echo htmlspecialchars($entrenador['nombre']); ?>">
-                    <div class="info">
-                        <h2><?php echo htmlspecialchars($entrenador['nombre'] . ' ' . $entrenador['apellido']); ?></h2>
-                        <p><?php echo htmlspecialchars($entrenador['especialidad']); ?></p>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <?php if (empty($entrenadores)): ?>
-            <p>No hay entrenadores registrados.</p>
-        <?php endif; ?>
+    </nav>
+    <!-- Contenido Principal -->
+    <div class="container mt-4">
+        <h1>Bienvenido, Cliente</h1>
     </div>
-</section>
-    <!-- SECCIÓN CONTACTO -->
-    <section class="contacto" id="contacto">
-        <div class="contenido-seccion">
-            <div class="contenedor-titulo">
-                <div class="numero">06</div>
-                <div class="info">
-                    <span class="frase">LA MEJOR EXPERIENCIA</span>
-                    <h2>CONTACTO</h2>
-                </div>
-            </div>
-            <div class="fila">
-                <div class="col"><input type="text" placeholder="Ingrese Email"></div>
-                <div class="col"><input type="text" placeholder="Ingrese Nombre"></div>
-            </div>
-            <div class="mensaje">
-                <textarea cols="30" rows="10" placeholder="Ingresa el Mensaje"></textarea>
-                <button>Enviar Mensaje</button>
-            </div>
-            
-        </div>
-    </section>
-    <!-- SECCIÓN INICIAR SESIÓN -->
-    <section id="iniciar-sesion">
-    <a href="/fitnessplus/admin/login.php"></a>
-    </section>
-    <script src="/fitnessplus/js/app.js"></script>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -62,9 +62,9 @@ class Sistema
     function login($correo, $contrasena)
     {
         $this->conexion();
-        $contrasena = md5($contrasena);
+        $contrasena = md5($contrasena); // Asegúrate de que el hash coincida con tu BD
         $acceso = false;
-
+    
         if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
             $sql = "SELECT * FROM usuario WHERE correo = :correo AND contrasena = :contrasena";
             $stmt = $this->con->prepare($sql);
@@ -72,19 +72,20 @@ class Sistema
             $stmt->bindParam(':contrasena', $contrasena, PDO::PARAM_STR);
             $stmt->execute();
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
             if ($resultado) {
                 $acceso = true;
                 $_SESSION['correo'] = $correo;
                 $_SESSION['validado'] = $acceso;
-                $_SESSION['roles'] = $this->getRol($correo);
-                $_SESSION['privilegios'] = $this->getPrivilegio($correo);
+                $_SESSION['roles'] = $this->getRol($correo); // Cargar roles en la sesión
+                $_SESSION['privilegios'] = $this->getPrivilegio($correo); // Cargar permisos
                 return $acceso;
             }
         }
         $_SESSION['validado'] = false;
         return $acceso;
     }
+    
     function logout()
     {
         session_unset();
@@ -92,14 +93,20 @@ class Sistema
         header("Location: login.php");
         exit();
     }
-    function checkRol($rol)
-    {
-        if (isset($_SESSION['roles']) && in_array($rol, $_SESSION['roles'])) {
-            return true;
-        } else {
-            $this->deniedAccess("ERROR: No tienes el rol adecuado para acceder a esta sección.");
+    function checkRol(...$rol)
+{
+    if (isset($_SESSION['roles'])) {
+        // Verificar si el usuario tiene al menos uno de los roles permitidos
+        foreach ($_SESSION['roles'] as $rolUsuario) {
+            if (in_array($rolUsuario, $rol)) {
+                return $rolUsuario; // Retorna el rol del usuario si está permitido
+            }
         }
     }
+    // Si no tiene ninguno de los roles permitidos, denegar acceso
+    $this->deniedAccess("ERROR: No tienes el rol adecuado para acceder a esta sección.");
+}
+
     function checkPrivilege($permiso)
     {
         if (isset($_SESSION['privilegios']) && in_array($permiso, $_SESSION['privilegios'])) {
@@ -115,6 +122,10 @@ class Sistema
         $this->alert($tipo, $mensaje);
         require_once('views/footer.php');
         die();
+    }
+    function getCurrentRol()
+    {
+        return $_SESSION['roles'][0] ?? 'Invitado';
     }
 }
 
