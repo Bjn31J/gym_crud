@@ -1,5 +1,5 @@
 <?php 
-require('views/header/header_cliente.php'); 
+require('views/header/header_entrenador.php'); 
 ?>
 <div class="container mt-5">
     <h1 class="text-center mb-4 "style="font-weight: bold;">Planes de Entrenamiento</h1>

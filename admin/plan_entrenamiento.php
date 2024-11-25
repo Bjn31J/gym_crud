@@ -1,39 +1,53 @@
 <?php
 require_once('plan_entrenamiento.class.php');
-$app = new Plan_Entrenamiento(); 
-$rolUsuario = $app->checkRol('Administrador', 'Cliente');
+$app = new Plan_Entrenamiento();
+$rolUsuario = $app->checkRol('Administrador', 'Cliente', 'Entrenador');
 $accion = (isset($_GET['accion'])) ? $_GET['accion'] : NULL;
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 
-// Restricciones para rol "Cliente"
-if ($rolUsuario == 'Cliente' && !in_array($accion, [NULL, 'imprimir'])) {
-    $mensaje = "Acción no permitida para este rol.";
-    $tipo = "danger";
-    $planes = $app->readAll(); // Mostrar solo los planes
-    include 'views/plan_entrenamiento/index.php'; 
-    exit();
+// Restricciones para Cliente y Entrenador
+if ($rolUsuario === 'Cliente' || $rolUsuario === 'Entrenador') {
+    if (!is_null($accion) && $accion !== 'ver') {
+        $mensaje = "Acción no permitida para este rol.";
+        $tipo = "danger";
+        $planes = $app->readAll(); // Mostrar solo los planes
+        if ($rolUsuario === 'Cliente') {
+            include 'views/plan_entrenamiento/index_cliente.php';
+        } elseif ($rolUsuario === 'Entrenador') {
+            include 'views/plan_entrenamiento/index_entrenador.php';
+        }
+        exit();
+    }
 }
 
 switch ($accion) {
     case 'crear': // Acceso solo para Administrador
-        if ($rolUsuario != 'Administrador') {
+        if ($rolUsuario !== 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
             $planes = $app->readAll();
-            include 'views/plan_entrenamiento/index.php'; 
+            if ($rolUsuario === 'Cliente') {
+                include 'views/plan_entrenamiento/index_cliente.php';
+            } elseif ($rolUsuario === 'Entrenador') {
+                include 'views/plan_entrenamiento/index_entrenador.php';
+            }
             exit();
         }
-        $clientes = $app->getClientes();  
-        $entrenadores = $app->getEntrenadores();  
-        include 'views/plan_entrenamiento/crear.php'; 
+        $clientes = $app->getClientes();
+        $entrenadores = $app->getEntrenadores();
+        include 'views/plan_entrenamiento/crear.php';
         break;
 
     case 'nuevo': // Acceso solo para Administrador
-        if ($rolUsuario != 'Administrador') {
+        if ($rolUsuario !== 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
             $planes = $app->readAll();
-            include 'views/plan_entrenamiento/index.php'; 
+            if ($rolUsuario === 'Cliente') {
+                include 'views/plan_entrenamiento/index_cliente.php';
+            } elseif ($rolUsuario === 'Entrenador') {
+                include 'views/plan_entrenamiento/index_entrenador.php';
+            }
             exit();
         }
         $data = $_POST['data'];
@@ -49,29 +63,37 @@ switch ($accion) {
             $tipo = "danger";
         }
         $planes = $app->readAll();
-        include('views/plan_entrenamiento/index.php'); 
+        include('views/plan_entrenamiento/index.php');
         break;
 
     case 'actualizar': // Acceso solo para Administrador
-        if ($rolUsuario != 'Administrador') {
+        if ($rolUsuario !== 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
             $planes = $app->readAll();
-            include 'views/plan_entrenamiento/index.php'; 
+            if ($rolUsuario === 'Cliente') {
+                include 'views/plan_entrenamiento/index_cliente.php';
+            } elseif ($rolUsuario === 'Entrenador') {
+                include 'views/plan_entrenamiento/index_entrenador.php';
+            }
             exit();
         }
-        $plan = $app->readOne($id); 
-        $clientes = $app->getClientes();  
-        $entrenadores = $app->getEntrenadores();  
-        include('views/plan_entrenamiento/crear.php'); 
+        $plan = $app->readOne($id);
+        $clientes = $app->getClientes();
+        $entrenadores = $app->getEntrenadores();
+        include('views/plan_entrenamiento/crear.php');
         break;
 
     case 'modificar': // Acceso solo para Administrador
-        if ($rolUsuario != 'Administrador') {
+        if ($rolUsuario !== 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
             $planes = $app->readAll();
-            include 'views/plan_entrenamiento/index.php'; 
+            if ($rolUsuario === 'Cliente') {
+                include 'views/plan_entrenamiento/index_cliente.php';
+            } elseif ($rolUsuario === 'Entrenador') {
+                include 'views/plan_entrenamiento/index_entrenador.php';
+            }
             exit();
         }
         $data = $_POST['data'];
@@ -84,15 +106,19 @@ switch ($accion) {
             $tipo = "danger";
         }
         $planes = $app->readAll();
-        include('views/plan_entrenamiento/index.php'); 
+        include('views/plan_entrenamiento/index.php');
         break;
 
     case 'eliminar': // Acceso solo para Administrador
-        if ($rolUsuario != 'Administrador') {
+        if ($rolUsuario !== 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
             $planes = $app->readAll();
-            include 'views/plan_entrenamiento/index.php'; 
+            if ($rolUsuario === 'Cliente') {
+                include 'views/plan_entrenamiento/index_cliente.php';
+            } elseif ($rolUsuario === 'Entrenador') {
+                include 'views/plan_entrenamiento/index_entrenador.php';
+            }
             exit();
         }
         if (!is_null($id) && is_numeric($id)) {
@@ -106,20 +132,17 @@ switch ($accion) {
             }
         }
         $planes = $app->readAll();
-        include("views/plan_entrenamiento/index.php"); 
+        include("views/plan_entrenamiento/index.php");
         break;
 
-        default: // Mostrar planes
+    default: // Mostrar planes
+        $planes = $app->readAll();
         if ($rolUsuario === 'Cliente') {
-            $planes = $app->readAll('Cliente'); // Filtrar por cliente
-            include 'views/plan_entrenamiento/index_cliente.php'; // Vista del cliente
+            include 'views/plan_entrenamiento/index_cliente.php';
+        } elseif ($rolUsuario === 'Entrenador') {
+            include 'views/plan_entrenamiento/index_entrenador.php';
         } else {
-            $planes = $app->readAll('Administrador'); // Administrador ve todos los planes
-            include 'views/plan_entrenamiento/index.php'; // Vista del administrador
+            include 'views/plan_entrenamiento/index.php';
         }
         break;
 }
-?>
-
-
-
