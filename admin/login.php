@@ -13,7 +13,7 @@ switch ($accion) {
             $tipo = "success";
 
             // Obtener el rol del usuario
-            $rol = $app->getCurrentRol(); // Ajusta según tu lógica para obtener el rol del usuario logueado.
+            $rol = $app->getCurrentRol(); // Llama a un método para obtener el rol actual del usuario
 
             if ($rol === 'Administrador') {
                 $app->checkRol('Administrador'); // Verifica el rol
@@ -21,6 +21,9 @@ switch ($accion) {
             } elseif ($rol === 'Cliente') {
                 $app->checkRol('Cliente'); // Verifica el rol
                 require_once('views/header/header_cliente.php');
+            } elseif ($rol === 'Entrenador') {
+                $app->checkRol('Entrenador'); // Verifica el rol
+                require_once('views/header/header_entrenador.php');
             } else {
                 // Si el rol no es permitido
                 $mensaje = "No tienes permisos para acceder a esta sección.";
@@ -49,5 +52,4 @@ switch ($accion) {
 
 require_once('views/footer.php');
 ?>
-
 

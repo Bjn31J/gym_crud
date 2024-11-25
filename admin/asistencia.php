@@ -1,15 +1,28 @@
 <?php
 require_once('asistencia.class.php');
 $app = new Asistencia();
-$app -> checkRol('Administrador');
+
+// Verificar roles
+$rolUsuario = $app->checkRol('Administrador', 'Entrenador');
 $accion = (isset($_GET['accion'])) ? $_GET['accion'] : null;
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
+
+// Restricción para Entrenador: Solo permitir 'crear' y 'nuevo'
+if ($rolUsuario === 'Entrenador' && !in_array($accion, [null, 'crear', 'nuevo'])) {
+    $mensaje = "Acción no permitida para este rol.";
+    $tipo = "danger";
+    $asistencias = $app->readAll();
+    include 'views/asistencia/index_entrenador.php'; // Mostrar solo las opciones del entrenador
+    exit();
+}
+
 switch ($accion) {
-    case 'crear':
+    case 'crear': // Permitir a Administrador y Entrenador
         $planes = $app->getPlanes(); 
         include 'views/asistencia/crear.php';
         break;
-    case 'nuevo':
+
+    case 'nuevo': // Permitir a Administrador y Entrenador
         $data = $_POST['data'];
         $resultado = $app->create($data);
         if ($resultado) {
@@ -20,14 +33,30 @@ switch ($accion) {
             $tipo = "danger";
         }
         $asistencias = $app->readAll();
-        include('views/asistencia/index.php');
+        include('views/asistencia/index_entrenador.php'); // Usar la vista específica del entrenador
         break;
-    case 'actualizar':
+
+    case 'actualizar': // Solo para Administrador
+        if ($rolUsuario !== 'Administrador') {
+            $mensaje = "Acción no permitida.";
+            $tipo = "danger";
+            $asistencias = $app->readAll();
+            include('views/asistencia/index_entrenador.php');
+            exit();
+        }
         $asistencia = $app->readOne($id); 
         $planes = $app->getPlanes(); 
         include('views/asistencia/crear.php'); 
         break;
-    case 'modificar':
+
+    case 'modificar': // Solo para Administrador
+        if ($rolUsuario !== 'Administrador') {
+            $mensaje = "Acción no permitida.";
+            $tipo = "danger";
+            $asistencias = $app->readAll();
+            include('views/asistencia/index_entrenador.php');
+            exit();
+        }
         $data = $_POST['data'];
         $resultado = $app->update($id, $data);
         if ($resultado) {
@@ -40,7 +69,15 @@ switch ($accion) {
         $asistencias = $app->readAll();
         include('views/asistencia/index.php');
         break;
-    case 'eliminar':
+
+    case 'eliminar': // Solo para Administrador
+        if ($rolUsuario !== 'Administrador') {
+            $mensaje = "Acción no permitida.";
+            $tipo = "danger";
+            $asistencias = $app->readAll();
+            include('views/asistencia/index_entrenador.php');
+            exit();
+        }
         if (!is_null($id)) {
             $resultado = $app->delete($id);
             if ($resultado) {
@@ -54,8 +91,13 @@ switch ($accion) {
         $asistencias = $app->readAll();
         include("views/asistencia/index.php");
         break;
+
     default:
         $asistencias = $app->readAll();
-        include 'views/asistencia/index.php';
+        if ($rolUsuario === 'Entrenador') {
+            include 'views/asistencia/index_entrenador.php'; // Vista específica para el entrenador
+        } else {
+            include 'views/asistencia/index.php'; // Vista completa para el administrador
+        }
 }
 ?>
