@@ -1,6 +1,6 @@
 <?php require('views/header/header_administrador.php'); ?>
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Gestión de Roles</h1>
+    <h1 class="text-center mb-4"style="font-weight: bold;">Gestión de Roles</h1>
 
     <?php if (isset($mensaje)): $app->alert($tipo, $mensaje); endif; ?>
 

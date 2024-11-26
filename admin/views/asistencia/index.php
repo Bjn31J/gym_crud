@@ -1,6 +1,6 @@
 <?php require('views/header/header_administrador.php'); ?>
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Asistencias de Entrenadores</h1>
+    <h1 class="text-center mb-4"style="font-weight: bold;">Asistencias de Entrenadores</h1>
     <?php if (isset($mensaje)) : $app->alert($tipo, $mensaje); endif; ?>
     <div class="mb-3">
         <a href="asistencia.php?accion=crear" class="btn btn-success btn-lg">Nueva Asistencia</a>

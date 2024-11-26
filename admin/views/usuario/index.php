@@ -1,6 +1,6 @@
 <?php require('views/header/header_administrador.php'); ?>
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Usuarios</h1>
+    <h1 class="text-center mb-4"style="font-weight: bold;">Usuarios</h1>
     
     <?php if (isset($mensaje)) : $app->alert($tipo, $mensaje); endif; ?>
     <div class="mb-3">

@@ -1,6 +1,6 @@
 <?php require('views/header/header_administrador.php'); ?>
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Entrenadores Fitness Plus</h1>
+    <h1 class="text-center mb-4 "style="font-weight: bold;">Entrenadores Fitness Plus</h1>
 
     <!-- Botón "Nuevo Entrenador" -->
     <div class="mb-3">
