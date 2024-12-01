@@ -28,6 +28,7 @@
                    id="fecha_asistencia" 
                    class="form-control" 
                    value="<?php echo isset($asistencia['fecha_asistencia']) ? $asistencia['fecha_asistencia'] : date('Y-m-d'); ?>" 
+                   min="<?php echo date('Y-m-d'); ?>" 
                    required />
         </div>
         <!-- Asistió (Sí o No) -->

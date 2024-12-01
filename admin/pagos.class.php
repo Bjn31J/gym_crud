@@ -1,5 +1,6 @@
 <?php
 require_once('../sistema.class.php');
+
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
@@ -29,40 +30,74 @@ class Pagos extends Sistema
     function create($data)
     {
         $this->conexion();
-        if (empty($data['id_cliente']) || empty($data['costo']) || empty($data['tipo_plan'])) {
+        if (empty($data['id_cliente']) || empty($data['costo']) || empty($data['tipo_plan']) || empty($data['fecha_pago'])) {
             return ['error' => 'Faltan datos requeridos para el pago'];
         }
+
+        // Validar que la fecha de pago no sea anterior a hoy
+        if ($data['fecha_pago'] < date('Y-m-d')) {
+            return ['error' => 'La fecha de pago no puede ser anterior a la fecha actual'];
+        }
+
         $sql = "INSERT INTO pagos (id_cliente, costo, tipo_plan, fecha_pago) 
-                VALUES (:id_cliente, :costo, :tipo_plan, NOW());";
+            VALUES (:id_cliente, :costo, :tipo_plan, :fecha_pago);";
         $insertar = $this->con->prepare($sql);
         $insertar->bindParam(':id_cliente', $data['id_cliente'], PDO::PARAM_INT);
         $insertar->bindParam(':costo', $data['costo'], PDO::PARAM_STR);
         $insertar->bindParam(':tipo_plan', $data['tipo_plan'], PDO::PARAM_STR);
+        $insertar->bindParam(':fecha_pago', $data['fecha_pago'], PDO::PARAM_STR);
         $insertar->execute();
         return $insertar->rowCount();
     }
+
     function update($id, $data)
     {
         $this->conexion();
+        if (empty($data['id_cliente']) || empty($data['costo']) || empty($data['tipo_plan']) || empty($data['fecha_pago'])) {
+            return ['error' => 'Faltan datos requeridos para actualizar el pago'];
+        }
+
+        // Validar que la fecha de pago no sea anterior a hoy
+        if ($data['fecha_pago'] < date('Y-m-d')) {
+            return ['error' => 'La fecha de pago no puede ser anterior a la fecha actual'];
+        }
+
         $sql = "UPDATE pagos 
-                SET id_cliente = :id_cliente, costo = :costo, tipo_plan = :tipo_plan, fecha_pago = NOW() 
-                WHERE id_pago = :id_pago;";
+            SET id_cliente = :id_cliente, costo = :costo, tipo_plan = :tipo_plan, fecha_pago = :fecha_pago 
+            WHERE id_pago = :id_pago;";
         $modificar = $this->con->prepare($sql);
         $modificar->bindParam(':id_pago', $id, PDO::PARAM_INT);
         $modificar->bindParam(':id_cliente', $data['id_cliente'], PDO::PARAM_INT);
         $modificar->bindParam(':costo', $data['costo'], PDO::PARAM_STR);
         $modificar->bindParam(':tipo_plan', $data['tipo_plan'], PDO::PARAM_STR);
+        $modificar->bindParam(':fecha_pago', $data['fecha_pago'], PDO::PARAM_STR);
         $modificar->execute();
         return $modificar->rowCount();
     }
+
     function delete($id)
     {
         $this->conexion();
-        $sql = "DELETE FROM pagos WHERE id_pago = :id_pago;";
-        $borrar = $this->con->prepare($sql);
-        $borrar->bindParam(':id_pago', $id, PDO::PARAM_INT);
-        $borrar->execute();
-        return $borrar->rowCount();
+        $this->con->beginTransaction(); // Iniciar transacción
+        try {
+            // Eliminar registros relacionados en planes_entrenamiento
+            $sqlPlanes = "DELETE FROM planes_entrenamiento WHERE id_pago = :id_pago;";
+            $stmtPlanes = $this->con->prepare($sqlPlanes);
+            $stmtPlanes->bindParam(':id_pago', $id, PDO::PARAM_INT);
+            $stmtPlanes->execute();
+
+            // Eliminar el pago
+            $sqlPagos = "DELETE FROM pagos WHERE id_pago = :id_pago;";
+            $stmtPagos = $this->con->prepare($sqlPagos);
+            $stmtPagos->bindParam(':id_pago', $id, PDO::PARAM_INT);
+            $stmtPagos->execute();
+
+            $this->con->commit(); // Confirmar transacción
+            return $stmtPagos->rowCount();
+        } catch (Exception $e) {
+            $this->con->rollBack(); // Revertir transacción en caso de error
+            throw new Exception("Error al eliminar el pago: " . $e->getMessage());
+        }
     }
     function readOne($id)
     {

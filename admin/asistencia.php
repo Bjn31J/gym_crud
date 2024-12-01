@@ -1,12 +1,10 @@
 <?php
 require_once('asistencia.class.php');
 $app = new Asistencia();
-
 // Verificar roles
 $rolUsuario = $app->checkRol('Administrador', 'Entrenador');
 $accion = (isset($_GET['accion'])) ? $_GET['accion'] : null;
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
-
 // Restricción para Entrenador: Solo permitir 'crear' y 'nuevo'
 if ($rolUsuario === 'Entrenador' && !in_array($accion, [null, 'crear', 'nuevo'])) {
     $mensaje = "Acción no permitida para este rol.";
@@ -15,7 +13,6 @@ if ($rolUsuario === 'Entrenador' && !in_array($accion, [null, 'crear', 'nuevo'])
     include 'views/asistencia/index_entrenador.php'; // Mostrar solo las opciones del entrenador
     exit();
 }
-
 switch ($accion) {
     case 'crear': // Permitir a Administrador y Entrenador
         $planes = $app->getPlanes(); 
@@ -39,7 +36,6 @@ switch ($accion) {
             include('views/asistencia/index.php'); // Vista completa para el administrador
         }
         break;
-
     case 'actualizar': // Solo para Administrador
         if ($rolUsuario !== 'Administrador') {
             $mensaje = "Acción no permitida.";
@@ -52,7 +48,6 @@ switch ($accion) {
         $planes = $app->getPlanes(); 
         include('views/asistencia/crear.php'); 
         break;
-
     case 'modificar': // Solo para Administrador
         if ($rolUsuario !== 'Administrador') {
             $mensaje = "Acción no permitida.";
@@ -73,7 +68,6 @@ switch ($accion) {
         $asistencias = $app->readAll();
         include('views/asistencia/index.php'); // Correcto para administrador
         break;
-
     case 'eliminar': // Solo para Administrador
         if ($rolUsuario !== 'Administrador') {
             $mensaje = "Acción no permitida.";
@@ -95,7 +89,6 @@ switch ($accion) {
         $asistencias = $app->readAll();
         include("views/asistencia/index.php"); // Correcto para administrador
         break;
-
     default:
         $asistencias = $app->readAll();
         if ($rolUsuario === 'Entrenador') {

@@ -1,5 +1,6 @@
 <?php
 require_once('../sistema.class.php');
+
 class Cliente extends Sistema {
     function create($data) {
         $result = [];
@@ -16,6 +17,7 @@ class Cliente extends Sistema {
         $result = $insertar->rowCount();
         return $result;
     }
+
     function update($id, $data) {
         $this->conexion();
         $result = [];
@@ -32,16 +34,37 @@ class Cliente extends Sistema {
         $result = $modificar->rowCount();
         return $result;
     }
+
     function delete($id) {
-        $result = [];
         $this->conexion();
-        $sql = "DELETE FROM clientes WHERE id_cliente = :id_cliente;";
-        $borrar = $this->con->prepare($sql);
-        $borrar->bindParam(':id_cliente', $id, PDO::PARAM_INT);
-        $borrar->execute();
-        $result = $borrar->rowCount();
-        return $result;
+        $this->con->beginTransaction(); // Iniciar la transacción
+        try {
+            // Eliminar registros relacionados en la tabla `planes_entrenamiento`
+            $sqlPlanes = "DELETE FROM planes_entrenamiento WHERE id_pago IN (SELECT id_pago FROM pagos WHERE id_cliente = :id_cliente);";
+            $borrarPlanes = $this->con->prepare($sqlPlanes);
+            $borrarPlanes->bindParam(':id_cliente', $id, PDO::PARAM_INT);
+            $borrarPlanes->execute();
+
+            // Eliminar registros relacionados en la tabla `pagos`
+            $sqlPagos = "DELETE FROM pagos WHERE id_cliente = :id_cliente;";
+            $borrarPagos = $this->con->prepare($sqlPagos);
+            $borrarPagos->bindParam(':id_cliente', $id, PDO::PARAM_INT);
+            $borrarPagos->execute();
+
+            // Eliminar el cliente
+            $sqlCliente = "DELETE FROM clientes WHERE id_cliente = :id_cliente;";
+            $borrarCliente = $this->con->prepare($sqlCliente);
+            $borrarCliente->bindParam(':id_cliente', $id, PDO::PARAM_INT);
+            $borrarCliente->execute();
+
+            $this->con->commit(); // Confirmar la transacción
+            return true;
+        } catch (Exception $e) {
+            $this->con->rollBack(); // Revertir la transacción en caso de error
+            throw new Exception("Error al eliminar el cliente: " . $e->getMessage());
+        }
     }
+
     function readOne($id) {
         $this->conexion();
         $result = [];
@@ -52,6 +75,7 @@ class Cliente extends Sistema {
         $result = $sql->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
     function readAll() {
         $this->conexion();
         $result = [];
@@ -63,3 +87,5 @@ class Cliente extends Sistema {
     }
 }
 ?>
+
+

@@ -1,6 +1,5 @@
 <?php
 require_once('../sistema.class.php');
-
 class Asistencia extends Sistema {
     // Método para obtener todas las asistencias con información detallada
     function readAll() {
@@ -16,8 +15,6 @@ class Asistencia extends Sistema {
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-
     // Método para obtener una asistencia específica
     function readOne($id_asistencia) {
         $this->conexion();
@@ -35,7 +32,6 @@ class Asistencia extends Sistema {
         $sql->execute();
         return $sql->fetch(PDO::FETCH_ASSOC);
     }
-
     // Método para crear una nueva asistencia
     function create($data) {
         $this->conexion();
@@ -47,7 +43,6 @@ class Asistencia extends Sistema {
         $sql->bindParam(':asistio', $data['asistio'], PDO::PARAM_STR);
         return $sql->execute();
     }
-
     // Método para actualizar una asistencia existente
     function update($id_asistencia, $data) {
         $this->conexion();
@@ -61,7 +56,6 @@ class Asistencia extends Sistema {
         $sql->bindParam(':asistio', $data['asistio'], PDO::PARAM_STR);
         return $sql->execute();
     }
-
     // Método para eliminar una asistencia
     function delete($id_asistencia) {
         $this->conexion();
@@ -70,7 +64,6 @@ class Asistencia extends Sistema {
         $sql->bindParam(':id_asistencia', $id_asistencia, PDO::PARAM_INT);
         return $sql->execute();
     }
-
     // Método para obtener los planes relacionados con entrenadores
     function getPlanes() {
         $this->conexion();
