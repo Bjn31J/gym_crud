@@ -7,11 +7,9 @@ switch ($accion) {
     case 'login':
         $correo = $_POST['data']['correo'];
         $contrasena = $_POST['data']['contrasena'];
-        
         if ($app->login($correo, $contrasena)) {
             $mensaje = "Bienvenido al sistema";
             $tipo = "success";
-
             // Obtener el rol del usuario
             $rol = $app->getCurrentRol(); // Llama a un método para obtener el rol actual del usuario
 

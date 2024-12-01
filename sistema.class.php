@@ -75,7 +75,7 @@ class Sistema
     function login($correo, $contrasena)
     {
         $this->conexion();
-        $contrasena = md5($contrasena); // Asegúrate de que el hash coincida con tu BD
+        $contrasena = md5($contrasena); 
         $acceso = false;
 
         if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
@@ -90,8 +90,8 @@ class Sistema
                 $acceso = true;
                 $_SESSION['correo'] = $correo;
                 $_SESSION['validado'] = $acceso;
-                $_SESSION['roles'] = $this->getRol($correo); // Cargar roles en la sesión
-                $_SESSION['privilegios'] = $this->getPrivilegio($correo); // Cargar permisos
+                $_SESSION['roles'] = $this->getRol($correo); 
+                $_SESSION['privilegios'] = $this->getPrivilegio($correo); 
                 return $acceso;
             }
         }
