@@ -1,30 +1,25 @@
 <?php
+session_start();
 require_once('pagos.class.php');
 $app = new Pagos();
+
+// Obtener el correo del usuario desde la sesión
+$correoUsuario = isset($_SESSION['correo']) ? $_SESSION['correo'] : null;
 
 // Verificar el rol del usuario
 $rolUsuario = $app->checkRol('Administrador', 'Cliente');
 
 // Obtener acción e ID
-$accion = (isset($_GET['accion'])) ? $_GET['accion'] : NULL;
-$id = (isset($_GET['id'])) ? $_GET['id'] : null;
-
-// Restricciones para rol "Cliente"
-if ($rolUsuario == 'Cliente' && !in_array($accion, [NULL, 'imprimir'])) {
-    $mensaje = "Acción no permitida para este rol.";
-    $tipo = "danger";
-    $pagos = $app->readAll('Cliente'); // Mostrar solo los pagos del cliente
-    include 'views/pagos/index_cliente.php'; // Vista específica para clientes
-    exit();
-}
+$accion = isset($_GET['accion']) ? $_GET['accion'] : null;
+$id = isset($_GET['id']) ? $_GET['id'] : null;
 
 switch ($accion) {
     case 'crear': // Acceso solo para Administrador
         if ($rolUsuario != 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
-            $pagos = $app->readAll('Cliente'); // Mostrar solo los pagos del cliente
-            include 'views/pagos/index_cliente.php'; 
+            $pagos = $app->readAll($correoUsuario); // Mostrar solo los pagos del cliente logueado
+            include 'views/pagos/index_cliente.php';
             exit();
         }
         $clientes = $app->getClientes();
@@ -35,8 +30,8 @@ switch ($accion) {
         if ($rolUsuario != 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
-            $pagos = $app->readAll('Cliente');
-            include 'views/pagos/index_cliente.php'; 
+            $pagos = $app->readAll($correoUsuario);
+            include 'views/pagos/index_cliente.php';
             exit();
         }
         $data = $_POST['data'];
@@ -59,8 +54,8 @@ switch ($accion) {
         if ($rolUsuario != 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
-            $pagos = $app->readAll('Cliente');
-            include 'views/pagos/index_cliente.php'; 
+            $pagos = $app->readAll($correoUsuario);
+            include 'views/pagos/index_cliente.php';
             exit();
         }
         $pago = $app->readOne($id);
@@ -72,8 +67,8 @@ switch ($accion) {
         if ($rolUsuario != 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
-            $pagos = $app->readAll('Cliente');
-            include 'views/pagos/index_cliente.php'; 
+            $pagos = $app->readAll($correoUsuario);
+            include 'views/pagos/index_cliente.php';
             exit();
         }
         $data = $_POST['data'];
@@ -94,8 +89,8 @@ switch ($accion) {
         if ($rolUsuario != 'Administrador') {
             $mensaje = "Acción no permitida.";
             $tipo = "danger";
-            $pagos = $app->readAll('Cliente');
-            include 'views/pagos/index_cliente.php'; 
+            $pagos = $app->readAll($correoUsuario);
+            include 'views/pagos/index_cliente.php';
             exit();
         }
         if (!is_null($id) && is_numeric($id)) {
@@ -118,12 +113,15 @@ switch ($accion) {
 
     default: // Mostrar pagos
         if ($rolUsuario === 'Cliente') {
-            $pagos = $app->readAll('Cliente'); // Filtrar por cliente
-            include 'views/pagos/index_cliente.php'; // Vista del cliente
+            // Mostrar pagos solo del cliente logueado
+            $pagos = $app->readAll($correoUsuario);
+            include 'views/pagos/index_cliente.php';
         } else {
-            $pagos = $app->readAll('Administrador'); // Administrador ve todos los pagos
-            include 'views/pagos/index.php'; // Vista del administrador
+            // Mostrar todos los pagos para el administrador
+            $pagos = $app->readAll();
+            include 'views/pagos/index.php';
         }
         break;
 }
+?>
 

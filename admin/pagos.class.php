@@ -108,16 +108,28 @@ class Pagos extends Sistema
         $sql->execute();
         return $sql->fetch(PDO::FETCH_ASSOC);
     }
-    function readAll()
-    {
-        $this->conexion();
+    function readAll($correo = null)
+{
+    $this->conexion();
+    if ($correo) {
+        // Filtrar pagos por correo
+        $query = "SELECT pa.*, CONCAT(c.nombre, ' ', c.apellido) AS cliente_completo, pa.tipo_plan, pa.costo
+                  FROM pagos pa
+                  INNER JOIN clientes c ON pa.id_cliente = c.id_cliente
+                  WHERE c.email = :correo;";
+        $sql = $this->con->prepare($query);
+        $sql->bindParam(':correo', $correo, PDO::PARAM_STR);
+    } else {
+        // Mostrar todos los pagos
         $query = "SELECT pa.*, CONCAT(c.nombre, ' ', c.apellido) AS cliente_completo, pa.tipo_plan, pa.costo
                   FROM pagos pa
                   INNER JOIN clientes c ON pa.id_cliente = c.id_cliente;";
         $sql = $this->con->prepare($query);
-        $sql->execute();
-        return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
+    $sql->execute();
+    return $sql->fetchAll(PDO::FETCH_ASSOC);
+}
+
     function imprimirTicket($id_pago)
     {
         require_once '../vendor/autoload.php';

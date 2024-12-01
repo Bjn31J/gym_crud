@@ -1,11 +1,18 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-session_start();
+
+// Verificar si la sesión ya está iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include('config.class.php');
+
 class Sistema
 {
     var $con;
+
     function conexion()
     {
         try {
@@ -15,10 +22,12 @@ class Sistema
             die("Error de conexión: " . $e->getMessage());
         }
     }
+
     function alert($tipo, $mensaje)
     {
         include('views/alert.php');
     }
+
     function getRol($correo)
     {
         $this->conexion();
@@ -39,6 +48,7 @@ class Sistema
         }
         return $roles;
     }
+
     function getPrivilegio($correo)
     {
         $this->conexion();
@@ -61,12 +71,13 @@ class Sistema
         }
         return $privilegios;
     }
+
     function login($correo, $contrasena)
     {
         $this->conexion();
         $contrasena = md5($contrasena); // Asegúrate de que el hash coincida con tu BD
         $acceso = false;
-    
+
         if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
             $sql = "SELECT * FROM usuario WHERE correo = :correo AND contrasena = :contrasena";
             $stmt = $this->con->prepare($sql);
@@ -74,7 +85,7 @@ class Sistema
             $stmt->bindParam(':contrasena', $contrasena, PDO::PARAM_STR);
             $stmt->execute();
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
             if ($resultado) {
                 $acceso = true;
                 $_SESSION['correo'] = $correo;
@@ -87,7 +98,7 @@ class Sistema
         $_SESSION['validado'] = false;
         return $acceso;
     }
-    
+
     function logout()
     {
         session_unset();
@@ -95,19 +106,20 @@ class Sistema
         header("Location: login.php");
         exit();
     }
+
     function checkRol(...$rol)
-{
-    if (isset($_SESSION['roles'])) {
-        // Verificar si el usuario tiene al menos uno de los roles permitidos
-        foreach ($_SESSION['roles'] as $rolUsuario) {
-            if (in_array($rolUsuario, $rol)) {
-                return $rolUsuario; // Retorna el rol del usuario si está permitido
+    {
+        if (isset($_SESSION['roles'])) {
+            // Verificar si el usuario tiene al menos uno de los roles permitidos
+            foreach ($_SESSION['roles'] as $rolUsuario) {
+                if (in_array($rolUsuario, $rol)) {
+                    return $rolUsuario; // Retorna el rol del usuario si está permitido
+                }
             }
         }
+        // Si no tiene ninguno de los roles permitidos, denegar acceso
+        $this->deniedAccess("ERROR: No tienes el rol adecuado para acceder a esta sección.");
     }
-    // Si no tiene ninguno de los roles permitidos, denegar acceso
-    $this->deniedAccess("ERROR: No tienes el rol adecuado para acceder a esta sección.");
-}
 
     function checkPrivilege($permiso)
     {
@@ -117,6 +129,7 @@ class Sistema
             $this->deniedAccess("ERROR: No tienes el permiso adecuado para acceder a esta sección.");
         }
     }
+
     private function deniedAccess($mensaje)
     {
         $tipo = "danger";
@@ -125,10 +138,12 @@ class Sistema
         require_once('views/footer.php');
         die();
     }
+
     function getCurrentRol()
     {
         return $_SESSION['roles'][0] ?? 'Invitado';
     }
+
     function sendmail($destinatario, $asunto, $mensaje)
     {
         require 'vendor/autoload.php';
@@ -153,4 +168,4 @@ class Sistema
         }
     }
 }
-
+?>
