@@ -26,6 +26,7 @@ class Usuario extends Sistema {
                     $insertRole->bindParam(':id_rol', $roleId, PDO::PARAM_INT);
                     $insertRole->execute();
                 }
+                $this->enviarEmail($userData['correo']);
                 $this->con->commit();
                 return $stmt->rowCount();
             }
@@ -112,6 +113,18 @@ class Usuario extends Sistema {
         $stmt->execute();
         $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return array_column($roles, 'id_rol');
+    }
+    private function enviarEmail($email) {
+        $asunto = "¡Bienvenido a Fitness Plus!";
+        $mensaje = "
+            <h1>¡Hola, bienvenido a Fitness Plus!</h1>
+            <p>Tu cuenta ha sido creada exitosamente. Ahora puedes acceder a nuestros servicios utilizando el correo electrónico registrado: <strong>{$email}</strong>.</p>
+            <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+            <p>Atentamente,<br>Equipo de Fitness Plus</p>
+        ";
+
+        // Enviar el correo
+        $this->sendmail($email, $asunto, $mensaje);
     }
 }
 ?>
