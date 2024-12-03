@@ -22,9 +22,9 @@
                     <?php foreach ($pagos as $pago): ?>
                         <tr class="text-center align-middle">
                             <th scope="row"><?php echo $pago['id_pago']; ?></th>
-                            <td><?php echo htmlspecialchars($pago['cliente_completo']); ?></td>
+                            <td><?php echo $pago['cliente_completo']; ?></td>
                             <td><?php echo '$' . number_format($pago['costo'], 2); ?></td>
-                            <td><?php echo ucfirst(htmlspecialchars($pago['tipo_plan'])); ?></td>
+                            <td><?php echo ucfirst($pago['tipo_plan']); ?></td>
                             <td><?php echo date("d/m/Y", strtotime($pago['fecha_pago'])); ?></td>
                             <td>
                                 <a href="pagos.php?accion=imprimir&id=<?php echo $pago['id_pago']; ?>" 

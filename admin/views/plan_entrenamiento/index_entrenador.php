@@ -26,11 +26,11 @@ require('views/header/header_entrenador.php');
                     <?php foreach ($planes as $plan): ?>
                         <tr class="text-center align-middle">
                             <th scope="row"><?php echo $plan['id_plan']; ?></th>
-                            <td><?php echo htmlspecialchars($plan['cliente']); ?></td>
-                            <td><?php echo htmlspecialchars($plan['entrenador']); ?></td>
-                            <td><?php echo ucfirst(htmlspecialchars($plan['tipo_plan'])); ?></td>
+                            <td><?php echo $plan['cliente']; ?></td>
+                            <td><?php echo $plan['entrenador']; ?></td>
+                            <td><?php echo ucfirst($plan['tipo_plan']); ?></td>
                             <td><?php echo '$' . number_format($plan['costo'], 2); ?></td>
-                            <td><?php echo htmlspecialchars($plan['descripcion']); ?></td>
+                            <td><?php echo $plan['descripcion']; ?></td>
                             <td><?php echo date("d/m/Y", strtotime($plan['fecha_inicio'])); ?></td>
                             <td><?php echo date("d/m/Y", strtotime($plan['fecha_fin'])); ?></td>
                         </tr>

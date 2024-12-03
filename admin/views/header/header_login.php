@@ -188,10 +188,10 @@ try {
             <div class="fila">
                 <?php foreach ($entrenadores as $entrenador): ?>
                     <div class="col">
-                        <img src="/fitnessplus/uploads/<?php echo htmlspecialchars($entrenador['fotografia']); ?>" alt="Foto de <?php echo htmlspecialchars($entrenador['nombre']); ?>">
+                        <img src="/fitnessplus/uploads/<?php echo $entrenador['fotografia']; ?>" alt="Foto de <?php echo $entrenador['nombre']; ?>">
                         <div class="info">
-                            <h2><?php echo htmlspecialchars($entrenador['nombre'] . ' ' . $entrenador['apellido']); ?></h2>
-                            <p><?php echo htmlspecialchars($entrenador['especialidad']); ?></p>
+                            <h2><?php echo $entrenador['nombre'] . ' ' . $entrenador['apellido']; ?></h2>
+                            <p><?php echo $entrenador['especialidad']; ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -225,7 +225,7 @@ try {
             </div>
             <div class="col">
                 <h3>Correo Electrónico</h3>
-                <p>contacto@fitnessplus.com</p>
+                <p>fitnessplus002@gmail.com</p>
             </div>
         </div>
         <!-- Mapa de Google Maps -->
