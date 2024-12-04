@@ -1,6 +1,7 @@
 <?php
 require_once('roles.class.php');
 $app = new Roles();
+$app -> checkRol('Administrador');
 $accion = isset($_GET['accion']) ? $_GET['accion'] : null;
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 switch ($accion) {
